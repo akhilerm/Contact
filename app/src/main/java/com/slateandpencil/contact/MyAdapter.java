@@ -69,7 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
         });
 
-        holder.txtFooter.setText("Footer: " + mDataset.get(position));
+        holder.txtFooter.setText("Contact No." +position+":+919876543210");
 
     }
 
