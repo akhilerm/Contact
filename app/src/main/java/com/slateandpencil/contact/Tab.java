@@ -1,6 +1,8 @@
 package com.slateandpencil.contact;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +15,13 @@ import java.util.ArrayList;
 
 
 public class Tab extends Fragment {
+    String category;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<String> myDataset;
-    public Tab()
-    {
+    private SQLiteDatabase sb;
+    public Tab() {
 
     }
     @Override
@@ -31,13 +34,19 @@ public class Tab extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        Bundle bundle=this.getArguments();
+        sb = getActivity().openOrCreateDatabase("contact",android.content.Context.MODE_PRIVATE, null);
+        if(bundle!=null){
+            category=bundle.getString("cat");
+        }
         mRecyclerView = (RecyclerView)(getView()).findViewById(R.id.contact_list);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset=new ArrayList<String>();
-        for(int i=0;i<10;i++){
-            myDataset.add("Contact"+(i+1));
+        Cursor resultset = sb.rawQuery("select name,mob from details where category='"+category+"'", null);
+        while(resultset.moveToNext()){
+            myDataset.add(resultset.getString(0));
         }
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
