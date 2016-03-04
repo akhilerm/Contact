@@ -2,6 +2,7 @@ package com.slateandpencil.contact;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -49,12 +50,9 @@ public class MainActivity extends AppCompatActivity {
                     "  `id` number(10),\n" +
                     "  `name` varchar(30),\n" +
                     "  `category` varchar(30),\n" +
-                    "  `mob` number(13) ,\n" +
+                    "  `mob` varchar(13) ,\n" +
                     "  `email` varchar(100)\n" +
                     ");");
-            //ONly for testing
-            sb.execSQL("INSERT INTO 'details' ('id','name','category','mob','email') VALUES (30,'Akhil','Stationary',9645534925,'akhilerm@gmail.com');");
-            sb.execSQL("INSERT INTO 'details' ('id','name','category','mob','email') VALUES (31,'Akhilerm','Hospital',9645534925,'akhil@live.com');");
         } else {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
         }
@@ -79,23 +77,13 @@ public class MainActivity extends AppCompatActivity {
         }
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);*/
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         return true;
     }
 
@@ -145,16 +133,12 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.search) {
-           /* Toast.makeText(MainActivity.this, "Checkpoint Charlie", Toast.LENGTH_SHORT).show();
-            Bundle appData = new Bundle();
-            appData.putString("hello", "world");
-            startSearch(null, false, appData, false);*/
-            onSearchRequested();
-            return true;
+        int id=item.getItemId();
+        if(id==R.id.settings){
+            Intent intent = new Intent(MainActivity.this, settings.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
