@@ -195,7 +195,7 @@ public class settings extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         textView=(TextView)findViewById(R.id.textView);
         textView.setText("XML comes here");
-        final String stringUrl="http://192.168.0.106/xml_demo/123.xml";
+        final String stringUrl="http://www.mac.edu.in/cs-apps/myrpm/MyRpm.xml";
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -244,12 +244,7 @@ public class settings extends AppCompatActivity {
             stream = downloadUrl(urlString);
             contactList = rpmXmlParser.parse(stream);
             SQLiteDatabase sb=openOrCreateDatabase("contact", settings.MODE_PRIVATE, null);
-            try {
-                sb.execSQL("delete from details;");
-            }
-            catch (Exception e){
-                Log.e("Except",e.getMessage().toString());
-            }
+            sb.execSQL("delete from details;");
             for(ListIterator<Contact> iter = contactList.listIterator(); iter.hasNext();){
                 Contact data=iter.next();
                 sb.execSQL("insert into 'details' ('id','name','category','mob','email') values ('"+data.id+"','"+data.name+"','"+data.category+"','"+data.mob+"','"+data.email+"');");

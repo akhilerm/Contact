@@ -53,12 +53,11 @@ public class Tab extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset=new ArrayList<res_obj>();
-        res_obj temp=new res_obj();
         Cursor resultset = sb.rawQuery("select name,mob from details where category='"+category+"'", null);
         while(resultset.moveToNext()){
+            res_obj temp=new res_obj();
             temp.name=resultset.getString(0);
             temp.mob=resultset.getString(1);
-            Log.e("Item to data set",temp.name);
             myDataset.add(temp);
         }
         mAdapter = new MyAdapter(myDataset);
@@ -69,6 +68,7 @@ public class Tab extends Fragment {
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private ArrayList<res_obj> mDataset;
+        private res_obj obj;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -85,16 +85,19 @@ public class Tab extends Fragment {
 
             }
         }
+
         public void add(int position, res_obj item) {
             mDataset.add(position, item);
             notifyItemInserted(position);
         }
 
-        public void remove(String item) {
+        public void remove(res_obj item) {
             int position = mDataset.indexOf(item);
             mDataset.remove(position);
             notifyItemRemoved(position);
         }
+
+
 
         // Provide a suitable constructor (depends on the kind of dataset)
         public MyAdapter(ArrayList<res_obj> myDataset) {
@@ -116,19 +119,20 @@ public class Tab extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            final res_obj temp = mDataset.get(position);
-            holder.txtHeader.setText(temp.name);
+            obj=mDataset.get(position);
+            holder.txtHeader.setText(obj.name);
             holder.txtHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), page.class);
-                intent.putExtra("name",temp.name);
-                intent.putExtra("mob",temp.mob);
-                startActivity(intent);
+                    Intent intent = new Intent(getActivity(), page.class);
+                    intent.putExtra("name", obj.name);
+                    intent.putExtra("mob", obj.mob);
+                    intent.putExtra("cat", category);
+                    startActivity(intent);
                 }
             });
 
-            holder.txtFooter.setText(""+temp.mob);
+           holder.txtFooter.setText(obj.mob);
 
         }
 
