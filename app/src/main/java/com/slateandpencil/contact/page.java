@@ -152,7 +152,7 @@ public class page extends AppCompatActivity {
                                         MY_PERMISSIONS_REQUEST_CALL_PHONE);
                             }
                             else {
-                                Intent in = new Intent(Intent.ACTION_CALL, Uri.parse(call_mob));
+                                Intent in = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+call_mob));
                                 try {
                                     startActivity(in);
                                 } catch (Exception e) {
