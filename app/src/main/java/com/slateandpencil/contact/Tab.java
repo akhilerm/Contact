@@ -68,7 +68,6 @@ public class Tab extends Fragment {
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private ArrayList<res_obj> mDataset;
-        private res_obj obj;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -85,19 +84,6 @@ public class Tab extends Fragment {
 
             }
         }
-
-        public void add(int position, res_obj item) {
-            mDataset.add(position, item);
-            notifyItemInserted(position);
-        }
-
-        public void remove(res_obj item) {
-            int position = mDataset.indexOf(item);
-            mDataset.remove(position);
-            notifyItemRemoved(position);
-        }
-
-
 
         // Provide a suitable constructor (depends on the kind of dataset)
         public MyAdapter(ArrayList<res_obj> myDataset) {
@@ -116,23 +102,22 @@ public class Tab extends Fragment {
         }
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, final int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            obj=mDataset.get(position);
-            holder.txtHeader.setText(obj.name);
+            holder.txtHeader.setText(mDataset.get(position).name);
             holder.txtHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), page.class);
-                    intent.putExtra("name", obj.name);
-                    intent.putExtra("mob", obj.mob);
+                    intent.putExtra("name", mDataset.get(position).name);
+                    intent.putExtra("mob", mDataset.get(position).mob);
                     intent.putExtra("cat", category);
                     startActivity(intent);
                 }
             });
 
-           holder.txtFooter.setText(obj.mob);
+           holder.txtFooter.setText(mDataset.get(position).mob);
 
         }
 

@@ -3,6 +3,8 @@
     package="com.slateandpencil.contact" >
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +31,9 @@
             android:name=".page"
             android:label="@string/title_activity_page"
             android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.CALL" />
+            </intent-filter>
         </activity>
     </application>
 
