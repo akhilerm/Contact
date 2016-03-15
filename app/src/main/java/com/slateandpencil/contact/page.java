@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -57,6 +58,7 @@ public class page extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        FloatingActionButton floatingActionButton=(FloatingActionButton)findViewById(R.id.fab_contact);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -75,9 +77,23 @@ public class page extends AppCompatActivity {
         myDataset=new ArrayList<Page_Data>();
         myDataset.add(new Page_Data(1,category));
         myDataset.add(new Page_Data(2,mob));
-        myDataset.add(new Page_Data(3,email));
+        myDataset.add(new Page_Data(3,mob));
+        myDataset.add(new Page_Data(4,email));
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                intent.putExtra(ContactsContract.Intents.Insert.EMAIL,email)
+                        .putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                        .putExtra(ContactsContract.Intents.Insert.PHONE, mob)
+                        .putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                        .putExtra(ContactsContract.Intents.Insert.NAME,name);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -128,12 +144,15 @@ public class page extends AppCompatActivity {
             holder.txtHeader.setText(mDataset.get(position).text);
             switch (mDataset.get(position).icon){
                 case 1:
-                    holder.imageView.setImageResource(R.drawable.ic_map_white_24dp);
+                    //holder.imageView.setImageResource(R.drawable.ic_map_white_24dp);
                     break;
                 case 2:
-                    holder.imageView.setImageResource(R.drawable.ic_phone_white_24dp);
+                    holder.imageView.setImageResource(R.drawable.ic_message_white_24dp);
                     break;
                 case 3:
+                    holder.imageView.setImageResource(R.drawable.ic_phone_white_24dp);
+                    break;
+                case 4:
                     holder.imageView.setImageResource(R.drawable.ic_email_white_24dp);
                     break;
             }
@@ -143,6 +162,12 @@ public class page extends AppCompatActivity {
                 public void onClick(View v) {
                     switch (mDataset.get(position).icon){
                         case 2:
+                            Intent sendmessage = new Intent(Intent.ACTION_VIEW);
+                            sendmessage.setData(Uri.parse("sms:"));
+                            sendmessage.putExtra("address", mob);
+                            startActivity(sendmessage);
+                            break;
+                        case 3:
                             call_mob=mDataset.get(position).text;
                             if (ContextCompat.checkSelfPermission(page.this,
                                     Manifest.permission.CALL_PHONE)
@@ -157,11 +182,11 @@ public class page extends AppCompatActivity {
                                     startActivity(in);
                                 } catch (Exception e) {
                                     Log.e("exc",e.getMessage().toString());
-                                    Toast.makeText(getApplicationContext(), "Insufficient Permissions1", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Insufficient Permissions", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             break;
-                        case 3:
+                        case 4:
                             send_mail=mDataset.get(position).text;
                             Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                             sendIntent.setType("plain/text");
@@ -197,10 +222,10 @@ public class page extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Permission Granted
-                    Intent in = new Intent(Intent.ACTION_CALL, Uri.parse(call_mob));
+                    Intent in = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+call_mob));
                     try{startActivity(in);}
                     catch (Exception e){
-                        Toast.makeText(page.this, "Insufficient Permissions2", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(page.this, "Insufficient Permissions", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     //Permission Denied

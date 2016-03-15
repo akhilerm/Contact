@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     "  `mob` varchar(13) ,\n" +
                     "  `email` varchar(100)\n" +
                     ");");
+
         } else {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
         }
@@ -66,17 +67,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        /*Code for recycler list view
-        mRecyclerView = (RecyclerView) findViewById(R.id.contact_list);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        myDataset=new ArrayList<String>();
-        for(int i=0;i<10;i++){
-            myDataset.add("Contact"+(i+1));
-        }
-        mAdapter = new MyAdapter(myDataset);
-        mRecyclerView.setAdapter(mAdapter);*/
+
 
     }
 

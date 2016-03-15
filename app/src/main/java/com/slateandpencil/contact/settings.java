@@ -1,9 +1,11 @@
 package com.slateandpencil.contact;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.util.Xml;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +38,6 @@ import java.util.ListIterator;
 
 public class settings extends AppCompatActivity {
 
-    TextView textView;
     private static final String ns = null;
 
     public class RPMXmlParser {
@@ -193,12 +195,17 @@ public class settings extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        textView=(TextView)findViewById(R.id.textView);
-        textView.setText("XML comes here");
-        final String stringUrl="http://www.mac.edu.in/cs-apps/myrpm/MyRpm.xml";
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final String stringUrl="http://www.mac.edu.in/cs-apps/myrpm/MyRpm.php";
+        Button register=(Button)findViewById(R.id.register);
+        Button update = (Button) findViewById(R.id.update);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mac.edu.in/cs-apps/myrpm/"));
+                startActivity(browserIntent);
+            }
+        });
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ConnectivityManager connMgr = (ConnectivityManager)
@@ -206,9 +213,7 @@ public class settings extends AppCompatActivity {
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isConnected()) {
                     new DownloadXmlTask().execute(stringUrl);
-                    Snackbar.make(view, "Database is being updated", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } else {
+                    //show progress dialog here
                     Toast.makeText(settings.this, "Failed to update Database", Toast.LENGTH_SHORT).show();
                 }
 
@@ -231,7 +236,6 @@ public class settings extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            textView.setText(result);
         }
     }
 
