@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
                     "  `mob` varchar(13) ,\n" +
                     "  `email` varchar(100)\n" +
                     ");");
+            sb.execSQL("INSERT INTO 'details' ('id','name','category','mob','email') VALUES\n" +
+                    "(1,'Tibin Lukose','Individual','9495647807','tibin@zycon.in'),\n"+
+                    "(2,'Akhil Mohan','Institution','9645534925','akhilerm@gmail.com'),\n"+
+                    "(4,'Vishnu VS','Hotel','9562000692','vishnus687@gmail.com');");
 
         } else {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);

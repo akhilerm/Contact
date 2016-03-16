@@ -1,5 +1,6 @@
 package com.slateandpencil.contact;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,6 +40,8 @@ import java.util.ListIterator;
 public class settings extends AppCompatActivity {
 
     private static final String ns = null;
+    ProgressDialog progress;
+    Boolean success=true;
 
     public class RPMXmlParser {
         // We don't use namespaces
@@ -201,7 +204,7 @@ public class settings extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mac.edu.in/cs-apps/myrpm/"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mac.edu.in/cs-apps/myrpm"));
                 startActivity(browserIntent);
             }
         });
@@ -212,8 +215,36 @@ public class settings extends AppCompatActivity {
                         getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isConnected()) {
-                    new DownloadXmlTask().execute(stringUrl);
+                    progress = ProgressDialog.show(settings.this, "Updating",
+                            "Downloading data", true);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            // do the thing that takes a long time
+                            try{
+                                loadXmlFromNetwork(stringUrl);
+                                success=false;
+                            }
+                            catch (IOException|XmlPullParserException e){
+                                success=false;
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run()
+                                {
+                                    progress.dismiss();
+                                }
+                            });
+                        }
+                    }).start();
+
                     //show progress dialog here
+                }
+                else{
+                    Toast.makeText(settings.this, "Failed to update Database", Toast.LENGTH_SHORT).show();
+                }
+                if(success==false){
                     Toast.makeText(settings.this, "Failed to update Database", Toast.LENGTH_SHORT).show();
                 }
 
