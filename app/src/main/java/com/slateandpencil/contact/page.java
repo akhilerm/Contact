@@ -156,7 +156,6 @@ public class page extends AppCompatActivity {
                     holder.imageView.setImageResource(R.drawable.ic_email_white_24dp);
                     break;
             }
-            holder.imageView.setColorFilter(Color.parseColor("#767373"));
             holder.txtHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

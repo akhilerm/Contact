@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(getIntent().getBooleanExtra("Launch",false)==true) {
+            Toast.makeText(MainActivity.this, "Update Database periodically", Toast.LENGTH_LONG).show();
+        }
         database = getDatabasePath("contact");
         if (!database.exists()) {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
         }
+
         tab_list=new ArrayList<String>();
         Cursor resultset = sb.rawQuery("select distinct category from details", null);
         while(resultset.moveToNext()){
@@ -86,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
