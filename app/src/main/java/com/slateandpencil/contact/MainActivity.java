@@ -43,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getIntent().getBooleanExtra("Launch",false)==true) {
-            Toast.makeText(MainActivity.this, "Update Database periodically", Toast.LENGTH_LONG).show();
-        }
         database = getDatabasePath("contact");
         if (!database.exists()) {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
