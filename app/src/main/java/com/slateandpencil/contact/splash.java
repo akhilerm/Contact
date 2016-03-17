@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 public class splash extends AppCompatActivity {
     private final int SPLASH_DISPLAY_LENGTH = 3000;
@@ -25,6 +26,7 @@ public class splash extends AppCompatActivity {
                 splash.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+        Toast.makeText(splash.this,"Update Database periodically", Toast.LENGTH_SHORT).show();
     }
 }
 
