@@ -53,7 +53,7 @@ public class Tab extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset=new ArrayList<res_obj>();
-        Cursor resultset = sb.rawQuery("select name,mob from details where category='"+category+"'", null);
+        Cursor resultset = sb.rawQuery("select name,mob from details where category='"+category+"' order by name", null);
         while(resultset.moveToNext()){
             res_obj temp=new res_obj();
             temp.name=resultset.getString(0);
