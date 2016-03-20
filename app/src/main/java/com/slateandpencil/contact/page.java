@@ -59,7 +59,7 @@ public class page extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FloatingActionButton floatingActionButton=(FloatingActionButton)findViewById(R.id.fab_contact);
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.page_details);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -144,7 +144,7 @@ public class page extends AppCompatActivity {
             holder.txtHeader.setText(mDataset.get(position).text);
             switch (mDataset.get(position).icon){
                 case 1:
-                    //holder.imageView.setImageResource(R.drawable.ic_map_white_24dp);
+                    holder.imageView.setImageResource(R.drawable.ic_map_white_24dp);
                     break;
                 case 2:
                     holder.imageView.setImageResource(R.drawable.ic_message_white_24dp);
