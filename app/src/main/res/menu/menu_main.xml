@@ -5,11 +5,9 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/settings"
         android:title="Settings"
         android:icon="@drawable/ic_settings_white_24dp"
-        app:showAsAction="always"/>
-
-
+        app:showAsAction="ifRoom"/>
 </menu>
