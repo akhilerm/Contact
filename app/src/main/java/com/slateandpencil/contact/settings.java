@@ -252,7 +252,7 @@ public class settings extends AppCompatActivity {
         });
     }
 
-    private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+    /*private class DownloadXmlTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             try {
@@ -268,7 +268,7 @@ public class settings extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
         }
-    }
+    }*/
 
     private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;
@@ -279,10 +279,11 @@ public class settings extends AppCompatActivity {
             stream = downloadUrl(urlString);
             contactList = rpmXmlParser.parse(stream);
             SQLiteDatabase sb=openOrCreateDatabase("contact", settings.MODE_PRIVATE, null);
-            sb.execSQL("delete from details;");
+            sb.execSQL("DELETE FROM 'details';");
             for(ListIterator<Contact> iter = contactList.listIterator(); iter.hasNext();){
                 Contact data=iter.next();
                 sb.execSQL("insert into 'details' ('id','name','category','mob','email') values ('"+data.id+"','"+data.name+"','"+data.category+"','"+data.mob+"','"+data.email+"');");
+                Log.e("Charlie",data.category);
             }
             sb.close();
 

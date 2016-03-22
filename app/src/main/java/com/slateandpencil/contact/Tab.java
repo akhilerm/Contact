@@ -40,14 +40,13 @@ public class Tab extends Fragment {
 
         return inflater.inflate(R.layout.fragment_tab, container, false);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle=this.getArguments();
-        sb = getActivity().openOrCreateDatabase("contact",android.content.Context.MODE_PRIVATE, null);
-        if(bundle!=null){
-            category=bundle.getString("cat");
-        }
+        //Log.e("MIke", category);
+        category=getArguments().getString("cat");
+        sb = getActivity().openOrCreateDatabase("contact", android.content.Context.MODE_PRIVATE, null);
         mRecyclerView = (RecyclerView)(getView()).findViewById(R.id.contact_list);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());

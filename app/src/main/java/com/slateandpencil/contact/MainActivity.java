@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,16 +49,15 @@ public class MainActivity extends AppCompatActivity {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
             sb.execSQL("CREATE TABLE IF NOT EXISTS `details` (\n" +
                     "  `id` number(10),\n" +
-                    "  `name` varchar(30),\n" +
+                    "  `name` varchar(50),\n" +
                     "  `category` varchar(30),\n" +
-                    "  `mob` varchar(13) ,\n" +
+                    "  `mob` varchar(20) ,\n" +
                     "  `email` varchar(100)\n" +
                     ");");
-            sb.execSQL("INSERT INTO 'details' ('id','name','category','mob','email') VALUES\n" +
-                    "(1,'Tibin Lukose','Individual','9495647807','tibin@zycon.in'),\n"+
-                    "(2,'Akhil Mohan','Institution','9645534925','akhilerm@gmail.com'),\n"+
-                    "(4,'Vishnu VS','Hotel','9562000692','vishnus687@gmail.com');");
-
+            sb.execSQL("INSERT INTO 'details' (id,'name','category','mob','email') VALUES\n" +
+                    /*"(1,'Update Database','JCI Ramapuram','9495647807','tibin@zycon.in'),\n"+
+                    "(2,'','','9645534925','akhilerm@gmail.com'),\n"+*/
+                    "(1,'Update pls','JCI','9562000692','vishnus687@gmail.com');");
         } else {
             sb = openOrCreateDatabase("contact", MainActivity.MODE_PRIVATE, null);
         }
@@ -100,7 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for(String tab_name:tab_list) {
-            adapter.addFragment(new Tab(), tab_name);
+            Bundle bundle=new Bundle();
+            bundle.putString("cat", tab_name);
+            Tab tab=new Tab();
+            tab.setArguments(bundle);
+            adapter.addFragment(tab, tab_name);
         }
         viewPager.setAdapter(adapter);
     }
@@ -124,9 +128,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void addFragment(Fragment fragment, String title) {
-            Bundle bundle=new Bundle();
+            /*Bundle bundle=new Bundle();
+            Log.e("Foxtrot",title);
             bundle.putString("cat",title);
-            fragment.setArguments(bundle);
+            fragment.setArguments(bundle);*/
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
